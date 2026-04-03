@@ -1,12 +1,12 @@
 {
   "name": "@impeccable/detect",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "description": "Deterministic UI anti-pattern detector for design quality analysis",
   "author": "Paul Bakaus",
   "license": "BSL-1.1",
   "type": "module",
   "bin": {
-    "impeccable-detect": "./bin/cli.js"
+    "impeccable-detect": "bin/cli.js"
   },
   "main": "./src/detect-antipatterns.mjs",
   "exports": {
@@ -42,7 +42,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/pbakaus/impeccable-detect"
+    "url": "git+https://github.com/pbakaus/impeccable-detect.git"
   },
   "engines": {
     "node": ">=18.0.0"

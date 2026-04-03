@@ -1,6 +1,9 @@
 /**
  * Anti-Pattern Browser Detector for Impeccable
- * GENERATED — do not edit. Source: detect-antipatterns.mjs
+ * Copyright (c) 2026 Paul Bakaus
+ * SPDX-License-Identifier: BSL-1.1
+ *
+ * GENERATED -- do not edit. Source: detect-antipatterns.mjs
  * Rebuild: node scripts/build-browser-detector.js
  *
  * Usage: <script src="detect-antipatterns-browser.js"></script>
@@ -11,6 +14,8 @@ if (typeof window === 'undefined') return;
 
 /**
  * Anti-Pattern Detector for Impeccable
+ * Copyright (c) 2026 Paul Bakaus
+ * SPDX-License-Identifier: BSL-1.1
  *
  * Universal file — auto-detects environment (browser vs Node) and adapts.
  *

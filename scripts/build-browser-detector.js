@@ -28,6 +28,9 @@ code = code.replace(/^const IS_BROWSER = .*$/m, 'const IS_BROWSER = true;');
 
 const output = `/**
  * Anti-Pattern Browser Detector for Impeccable
+ * Copyright (c) 2026 Paul Bakaus
+ * SPDX-License-Identifier: BSL-1.1
+ *
  * GENERATED -- do not edit. Source: detect-antipatterns.mjs
  * Rebuild: node scripts/build-browser-detector.js
  *
