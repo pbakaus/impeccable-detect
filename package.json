@@ -1,0 +1,50 @@
+{
+  "name": "@impeccable/detect",
+  "version": "2.0.2",
+  "description": "Deterministic UI anti-pattern detector for design quality analysis",
+  "author": "Paul Bakaus",
+  "license": "BSL-1.1",
+  "type": "module",
+  "bin": {
+    "impeccable-detect": "./bin/cli.mjs"
+  },
+  "main": "./src/detect-antipatterns.mjs",
+  "exports": {
+    ".": "./src/detect-antipatterns.mjs",
+    "./browser": "./src/detect-antipatterns-browser.js"
+  },
+  "files": [
+    "bin/",
+    "src/",
+    "LICENSE"
+  ],
+  "dependencies": {
+    "jsdom": "^29.0.0"
+  },
+  "optionalDependencies": {
+    "puppeteer": "^24.39.1"
+  },
+  "scripts": {
+    "test": "bun test tests/detect-antipatterns.test.js && node --test tests/detect-antipatterns-fixtures.test.mjs",
+    "build:browser": "node scripts/build-browser-detector.js"
+  },
+  "keywords": [
+    "design",
+    "frontend",
+    "ux",
+    "anti-patterns",
+    "lint",
+    "accessibility",
+    "css",
+    "html",
+    "detection",
+    "ci-cd"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nicepaulbakaus/impeccable-detect"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
