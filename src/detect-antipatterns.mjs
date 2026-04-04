@@ -2450,9 +2450,12 @@ async function findOpenPort(start = 8400) {
   });
 }
 
+const LIVE_PID_FILE = path.join((await import('node:os')).default.tmpdir(), 'impeccable-live.json');
+
 async function liveCli() {
   const args = process.argv.slice(2);
   const helpMode = args.includes('--help');
+  const stopMode = args.includes('stop');
   const portArg = args.find(a => a.startsWith('--port='));
   const requestedPort = portArg ? parseInt(portArg.split('=')[1], 10) : null;
 
@@ -2462,13 +2465,32 @@ async function liveCli() {
 Start a local server that serves the browser detection overlay script.
 Inject the script into any page to scan for anti-patterns in real time.
 
+Commands:
+  live          Start the server (default)
+  live stop     Stop a running live server
+
 Options:
   --port=PORT   Use a specific port (default: auto-detect unused port)
   --help        Show this help message
 
 The server provides:
   /detect.js    The detection overlay script (inject via <script> tag)
-  /scan         Trigger a scan and return JSON results`);
+  /health       Health check endpoint
+  /stop         Stop the server remotely`);
+    process.exit(0);
+  }
+
+  // Stop a running server
+  if (stopMode) {
+    try {
+      const info = JSON.parse(fs.readFileSync(LIVE_PID_FILE, 'utf-8'));
+      const res = await fetch(`http://localhost:${info.port}/stop`);
+      if (res.ok) {
+        console.log(`Stopped live server on port ${info.port}.`);
+      }
+    } catch {
+      console.log('No running live server found.');
+    }
     process.exit(0);
   }
 
@@ -2485,6 +2507,12 @@ The server provides:
 
   const port = requestedPort || await findOpenPort();
 
+  const shutdown = () => {
+    try { fs.unlinkSync(LIVE_PID_FILE); } catch { /* ignore */ }
+    server.close();
+    process.exit(0);
+  };
+
   const server = http.default.createServer((req, res) => {
     // CORS headers for cross-origin injection
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -2496,7 +2524,11 @@ The server provides:
       res.end(browserScript);
     } else if (req.url === '/health') {
       res.writeHead(200, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify({ status: 'ok', version: '2.0.2' }));
+      res.end(JSON.stringify({ status: 'ok', port }));
+    } else if (req.url === '/stop') {
+      res.writeHead(200, { 'Content-Type': 'text/plain' });
+      res.end('stopping');
+      shutdown();
     } else {
       res.writeHead(404);
       res.end('Not found');
@@ -2504,20 +2536,20 @@ The server provides:
   });
 
   server.listen(port, '127.0.0.1', () => {
+    // Write PID file so `live stop` can find us
+    fs.writeFileSync(LIVE_PID_FILE, JSON.stringify({ pid: process.pid, port }));
+
     const url = `http://localhost:${port}`;
     console.log(`Impeccable live detection server running on ${url}\n`);
     console.log(`Inject into any page:`);
     console.log(`  const s = document.createElement('script');`);
     console.log(`  s.src = '${url}/detect.js';`);
     console.log(`  document.head.appendChild(s);\n`);
-    console.log(`Or add to HTML:`);
-    console.log(`  <script src="${url}/detect.js"><\/script>\n`);
-    console.log(`Press Ctrl+C to stop.`);
+    console.log(`Stop: npx @impeccable/detect live stop`);
   });
 
-  // Graceful shutdown
-  process.on('SIGINT', () => { server.close(); process.exit(0); });
-  process.on('SIGTERM', () => { server.close(); process.exit(0); });
+  process.on('SIGINT', shutdown);
+  process.on('SIGTERM', shutdown);
 }
 
 // ---------------------------------------------------------------------------

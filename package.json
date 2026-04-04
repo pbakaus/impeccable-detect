@@ -1,6 +1,6 @@
 {
   "name": "@impeccable/detect",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "description": "Deterministic UI anti-pattern detector for design quality analysis",
   "author": "Paul Bakaus",
   "license": "BSL-1.1",
