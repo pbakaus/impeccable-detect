@@ -1,75 +1,76 @@
 # Impeccable CLI
 
-Detect UI anti-patterns and design quality issues from the command line. Catches AI slop (side-tab borders, purple gradients, bounce easing, dark glows) and general design quality issues (line length, cramped padding, skipped headings, and more) across HTML, CSS, JSX, TSX, Vue, and Svelte files.
+Detect UI anti-patterns and design quality issues from the command line. Scans HTML, CSS, JSX, TSX, Vue, and Svelte files for 25 specific patterns including AI-generated UI tells, accessibility violations, and general design quality problems.
 
-Also manages [Impeccable skills](https://impeccable.style) installation and updates for AI harnesses.
-
-## Install
+## Quick Start
 
 ```bash
-npm install -g impeccable
+# Install skills into your AI harness (Claude, Cursor, Gemini, etc.)
+npx impeccable skills install
+
+# Update skills to the latest version
+npx impeccable skills update
+
+# List all available commands
+npx impeccable skills help
+
+# Scan files or directories for anti-patterns
+npx impeccable detect src/
+
+# Scan a live URL (requires Puppeteer)
+npx impeccable detect https://example.com
+
+# JSON output for CI/tooling
+npx impeccable detect --json src/
+
+# Regex-only mode (faster, no jsdom)
+npx impeccable detect --fast src/
 ```
 
-## Detection
+## What It Detects
 
-```bash
-npx impeccable detect src/                   # scan a directory
-npx impeccable detect index.html             # scan an HTML file
-npx impeccable detect https://example.com    # scan a URL (Puppeteer)
-npx impeccable detect --fast --json .        # regex-only, JSON output
+**AI Slop Tells** -- patterns that scream "AI generated this":
+- Side-tab accent borders, gradient text on headings
+- Purple/violet gradients and cyan-on-dark palettes
+- Dark mode with glowing accents, border + border-radius clashes
+
+**Typography Issues** -- overused fonts (Inter, Roboto), flat type hierarchy, single font families
+
+**Color & Contrast** -- WCAG AA violations, gray text on colored backgrounds, pure black/white
+
+**Layout & Composition** -- nested cards, monotonous spacing, everything-centered layouts
+
+**Motion** -- bounce/elastic easing, layout property transitions
+
+**Quality** -- tiny body text, cramped padding, long line lengths, small touch targets
+
+25 detections in total. See the full list at [impeccable.style](https://impeccable.style).
+
+## Exit Codes
+
+- `0` -- no issues found
+- `2` -- anti-patterns detected
+
+## Options
+
+```
+impeccable detect [options] [file-or-dir-or-url...]
+
+  --fast    Regex-only mode (skip jsdom, faster but less accurate)
+  --json    Output findings as JSON
+  --help    Show help
 ```
 
-### Options
+## Requirements
 
-- `--fast` -- Regex-only mode (skip jsdom, faster but misses linked stylesheets)
-- `--json` -- Output results as JSON (for CI/CD integration)
-- `--help` -- Show help
+- Node.js 18+
+- `jsdom` (included as dependency, used for HTML scanning)
+- `puppeteer` (optional, only needed for URL scanning)
 
-### Exit codes
+## Part of Impeccable
 
-- `0` -- No anti-patterns found
-- `2` -- Anti-patterns detected
-
-### Framework detection
-
-When scanning a directory, the CLI detects framework configs (Next.js, Vite, SvelteKit, Nuxt, Astro, Angular, Remix) and suggests scanning the running dev server via URL for more accurate results.
-
-## Live browser overlay
-
-```bash
-npx impeccable live                # start overlay server (auto-picks port)
-npx impeccable live --port=8421    # use a specific port
-npx impeccable live stop           # stop a running server
-```
-
-Serves the detection overlay script at `http://localhost:PORT/detect.js`. Inject it into any page to see anti-patterns highlighted in real time.
-
-## Skills management
-
-```bash
-npx impeccable skills help         # list all available skills
-npx impeccable skills install      # install skills into your project
-npx impeccable skills update       # update to latest version
-```
-
-## Programmatic usage
-
-```js
-import { detectText, detectHtml } from 'impeccable';
-
-// Scan a string (regex-based)
-const findings = detectText(cssContent, 'styles.css');
-
-// Scan an HTML file (jsdom-based)
-const findings = await detectHtml('path/to/index.html');
-```
-
-## What it detects
-
-25 anti-patterns across borders, color, typography, layout, motion, and quality.
+This CLI is part of [Impeccable](https://impeccable.style), a cross-provider design skill pack for AI-powered development tools. The full suite includes 20 steering commands for Claude, Cursor, Gemini, Codex, and more.
 
 ## License
 
-[BSL 1.1](./LICENSE) -- free for individuals, open source projects, and small teams (5 or fewer people, or under $1M ARR). Commercial license required for larger organizations. Converts to Apache 2.0 on 2030-04-03.
-
-Skills and prompt files in the [impeccable](https://github.com/pbakaus/impeccable) repo are Apache 2.0.
+[BSL 1.1](https://github.com/pbakaus/impeccable-detect/blob/main/LICENSE) -- free for individuals, open source projects, and small teams. Converts to Apache 2.0 on 2030-04-03.
