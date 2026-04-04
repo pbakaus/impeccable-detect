@@ -1,6 +1,6 @@
 {
   "name": "impeccable",
-  "version": "2.1.0",
+  "version": "2.0.6",
   "description": "Detect UI anti-patterns and design quality issues from the command line",
   "author": "Paul Bakaus",
   "license": "BSL-1.1",
