@@ -2545,7 +2545,7 @@ The server provides:
     console.log(`  const s = document.createElement('script');`);
     console.log(`  s.src = '${url}/detect.js';`);
     console.log(`  document.head.appendChild(s);\n`);
-    console.log(`Stop: npx @impeccable/detect live stop`);
+    console.log(`Stop: npx impeccable live stop`);
   });
 
   process.on('SIGINT', shutdown);
