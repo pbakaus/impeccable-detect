@@ -2460,7 +2460,7 @@ async function liveCli() {
   const requestedPort = portArg ? parseInt(portArg.split('=')[1], 10) : null;
 
   if (helpMode) {
-    console.log(`Usage: impeccable-detect live [options]
+    console.log(`Usage: impeccable live [options]
 
 Start a local server that serves the browser detection overlay script.
 Inject the script into any page to scan for anti-patterns in real time.

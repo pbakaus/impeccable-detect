@@ -73,4 +73,4 @@ This CLI is part of [Impeccable](https://impeccable.style), a cross-provider des
 
 ## License
 
-[BSL 1.1](https://github.com/pbakaus/impeccable-detect/blob/main/LICENSE) -- free for individuals, open source projects, and small teams. Converts to Apache 2.0 on 2030-04-03.
+[BSL 1.1](https://github.com/pbakaus/impeccable-cli/blob/main/LICENSE) -- free for individuals, open source projects, and small teams. Converts to Apache 2.0 on 2030-04-03.
